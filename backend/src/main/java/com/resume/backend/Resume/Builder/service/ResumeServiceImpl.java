@@ -49,32 +49,29 @@ public class ResumeServiceImpl implements ResumeService {
     public static Map<String, Object> parseMultipleResponses(String response) {
         Map<String, Object> jsonResponse = new HashMap<>();
 
-        // Extract content inside <think> tags
         int thinkStart = response.indexOf("<think>") + 7;
         int thinkEnd = response.indexOf("</think>");
         if (thinkStart != -1 && thinkEnd != -1) {
             String thinkContent = response.substring(thinkStart, thinkEnd).trim();
             jsonResponse.put("think", thinkContent);
         } else {
-            jsonResponse.put("think", null); // Handle missing <think> tags
+            jsonResponse.put("think", null);
         }
 
-        // Extract content that is in JSON format
-        int jsonStart = response.indexOf("```json") + 7; // Start after ```json
-        int jsonEnd = response.lastIndexOf("```");       // End before ```
+        int jsonStart = response.indexOf("```json") + 7;
+        int jsonEnd = response.lastIndexOf("```");
         if (jsonStart != -1 && jsonEnd != -1 && jsonStart < jsonEnd) {
             String jsonContent = response.substring(jsonStart, jsonEnd).trim();
             try {
-                // Convert JSON string to Map using Jackson ObjectMapper
                 ObjectMapper objectMapper = new ObjectMapper();
                 Map<String, Object> dataContent = objectMapper.readValue(jsonContent, Map.class);
                 jsonResponse.put("data", dataContent);
             } catch (Exception e) {
-                jsonResponse.put("data", null); // Handle invalid JSON
+                jsonResponse.put("data", null);
                 System.err.println("Invalid JSON format in the response: " + e.getMessage());
             }
         } else {
-            jsonResponse.put("data", null); // Handle missing JSON
+            jsonResponse.put("data", null);
         }
 
         return jsonResponse;

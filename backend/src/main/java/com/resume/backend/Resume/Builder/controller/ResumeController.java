@@ -11,10 +11,10 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/v1/resume/")
+@RequestMapping("/api/v1/resume")
 public class ResumeController {
 
-    private ResumeService resumeService;
+    final private ResumeService resumeService;
 
     public ResumeController(ResumeService resumeService){
         this.resumeService = resumeService;
