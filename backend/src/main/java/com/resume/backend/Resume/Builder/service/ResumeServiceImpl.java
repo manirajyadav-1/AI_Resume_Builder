@@ -14,41 +14,47 @@ import java.util.Map;
 
 @Service
 public class ResumeServiceImpl implements ResumeService {
-    final private ChatClient chatClient;
+    private ChatClient chatClient;
 
-    public ResumeServiceImpl(ChatClient.Builder builder){
+    public ResumeServiceImpl(ChatClient.Builder builder) {
         this.chatClient = builder.build();
     }
 
+
     @Override
-    public Map<String, Object> generateResumeResponse(String userResumeDescription) throws IOException {
+    public   Map<String, Object> generateResumeResponse(String userResumeDescription) throws IOException {
 
         String promptString = this.loadPromptFromFile("resume_prompt.txt");
         String promptContent = this.putValuesToTemplate(promptString, Map.of(
                 "userDescription", userResumeDescription
         ));
-
         Prompt prompt = new Prompt(promptContent);
         String response = chatClient.prompt(prompt).call().content();
         Map<String, Object> stringObjectMap = parseMultipleResponses(response);
+        //modify :
         return stringObjectMap;
     }
+
 
     String loadPromptFromFile(String filename) throws IOException {
         Path path = new ClassPathResource(filename).getFile().toPath();
         return Files.readString(path);
     }
 
-    String putValuesToTemplate(String template, Map<String, String> values){
-        for(Map.Entry<String, String> entry : values.entrySet()){
-            template = template.replace("{" + entry.getKey() + "}", entry.getValue());
+    String putValuesToTemplate(String template, Map<String, String> values) {
+        for (Map.Entry<String, String> entry : values.entrySet()) {
+
+            template = template.replace("{{" + entry.getKey() + "}}", entry.getValue());
+
         }
         return template;
     }
 
+
     public static Map<String, Object> parseMultipleResponses(String response) {
         Map<String, Object> jsonResponse = new HashMap<>();
 
+        // Extract content inside <think> tags
         int thinkStart = response.indexOf("<think>") + 7;
         int thinkEnd = response.indexOf("</think>");
         if (thinkStart != -1 && thinkEnd != -1) {
@@ -57,6 +63,7 @@ public class ResumeServiceImpl implements ResumeService {
         } else {
             jsonResponse.put("think", null);
         }
+
 
         int jsonStart = response.indexOf("```json") + 7;
         int jsonEnd = response.lastIndexOf("```");
