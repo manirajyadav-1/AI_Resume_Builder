@@ -218,7 +218,7 @@ const GenerateResume = () => {
 
   function ShowInputField() {
     return (
-      <div className="bg-base-200 shadow-lg rounded-lg p-10 max-w-2xl w-full text-center">
+      <div className="bg-base-200 shadow-lg rounded-lg p-10 mt-10 max-w-2xl w-full text-center">
         <h1 className="text-4xl font-bold mb-6 flex items-center justify-center gap-2">
           <FaBrain className="text-accent" /> AI Resume Description Input
         </h1>

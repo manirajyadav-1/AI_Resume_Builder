@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <div className="navbar fixed z-10 justify-between bg-base-100 shadow-md">
+    <div className="navbar max-h-10 fixed z-10 justify-between bg-base-100 shadow-md">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">

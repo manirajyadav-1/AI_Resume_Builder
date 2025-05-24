@@ -24,7 +24,7 @@ const Resume = ({ data }) => {
     <>
       <div
         ref={resumeRef}
-        className="max-w-4xl  mx-auto shadow-2xl rounded-lg p-8 space-y-6 bg-base-100 text-base-content border border-gray-200 dark:border-gray-700 transition-all duration-300"
+        className="max-w-4xl mx-auto shadow-2xl rounded-lg p-8 space-y-16 bg-base-100 text-base-content border border-gray-200 dark:border-gray-700 transition-all duration-300"
       >
         {/* Header Section */}
         <div className="text-center space-y-2">
