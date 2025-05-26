@@ -5,7 +5,7 @@ import { generateResume } from "../api/ResumeService";
 import { BiBook } from "react-icons/bi";
 import { useForm, useFieldArray } from "react-hook-form";
 import { FaPlusCircle } from "react-icons/fa";
-import Resume from "../components/Resume";
+import ResumeTemplates from "../components/ResumeTemplates";
 
 const GenerateResume = () => {
   const [data, setData] = useState({
@@ -256,7 +256,7 @@ const GenerateResume = () => {
   function showResume() {
     return (
       <div>
-        <Resume data={data} />
+        <ResumeTemplates data={data} />
 
         <div className="flex mt-5 justify-center gap-2">
           <div
@@ -270,7 +270,7 @@ const GenerateResume = () => {
             Generate Another
           </div>
           <div
-            onClick={() => {
+            onClick={() => { 
               setShowPromptInput(false);
               setShowFormUI(true);
               setShowResumeUI(false);
