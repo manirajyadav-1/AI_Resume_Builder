@@ -12,10 +12,7 @@ const Template2 = ({ data }) => {
         <p>{data.personalInformation.location}</p>
         <p>{data.personalInformation.email}</p>
         <p>{data.personalInformation.phoneNumber}</p>
-        {/* Add more sidebar info like skills/languages */}
-      </aside>
-      {/* Main Content */}
-      <main className="w-2/3 p-6">
+
         <section>
           <h2 className="text-xl font-semibold">Summary</h2>
           <p>{data.summary}</p>
@@ -36,9 +33,11 @@ const Template2 = ({ data }) => {
             ))}
           </div>
         </section>
+      </aside>
 
-        <div className="divider"></div>
-
+      {/* Main Content */}
+      <main className="w-2/3 p-6">
+      
         {/* Experience Section */}
         <section>
           <h2 className="text-2xl font-semibold text-secondary">Experience</h2>
