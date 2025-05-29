@@ -3,7 +3,7 @@ import React, { useRef } from 'react'
 const Template3 = ({ data }) => {
   const resumeRef = useRef(null);
   return (
-    <div ref={resumeRef} className="p-10 bg-slate-100 text-black space-y-10">
+    <div ref={resumeRef} className="max-w-5xl p-10 text-black space-y-10">
       <h1 className="text-3xl font-bold">{data.personalInformation.fullName}</h1>
       <section>
         <h2 className="text-2xl font-semibold">Experience</h2>
@@ -24,13 +24,13 @@ const Template3 = ({ data }) => {
           {data.education.map((edu, index) => (
             <div
               key={index}
-              className="mb-4 p-4 rounded-lg shadow-md bg-base-200 border border-gray-300 dark:border-gray-700"
+              className="mb-4 border-l-2 border-blue-500 pl-4"
             >
               <h3 className="text-xl font-bold">{edu.degree}</h3>
-              <p className="text-gray-500">
+              <p className="text-gray-800">
                 {edu.university}, {edu.location}
               </p>
-              <p className="text-gray-400">
+              <p className="text-gray-800">
                 🎓 Graduation Year: {edu.graduationYear}
               </p>
             </div>
@@ -59,14 +59,14 @@ const Template3 = ({ data }) => {
           {data.projects.map((proj, index) => (
             <div
               key={index}
-              className="mb-4 p-4 rounded-lg shadow-md bg-base-200 border border-gray-300 dark:border-gray-700"
+              className="mb-4 border-l-2 border-blue-500 pl-4"
             >
-              <h3 className="text-xl font-bold">{proj.title}</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <h3 className="text-xl text-gray-800 font-bold">{proj.title}</h3>
+              <p className="text-gray-800">
                 {proj.description}
               </p>
-              <p className="text-gray-500">
-                🛠 Technologies: {proj.technologiesUsed.join(", ")}
+              <p className="text-gray-800">
+                🛠 Technologies: {proj.technologiesUsed.join(", ")}                      
               </p>
               {proj.githubLink && (
                 <a
@@ -90,10 +90,10 @@ const Template3 = ({ data }) => {
           {data.certifications.map((cert, index) => (
             <div
               key={index}
-              className="mb-4 p-4 rounded-lg shadow-md bg-base-200 border border-gray-300 dark:border-gray-700"
+              className="mb-4 p-4 rounded-lg border"
             >
               <h3 className="text-xl font-bold">{cert.title}</h3>
-              <p className="text-gray-500">
+              <p className="text-gray-800">
                 {cert.issuingOrganization} - {cert.year}
               </p>
             </div>
@@ -108,11 +108,11 @@ const Template3 = ({ data }) => {
           {data.achievements.map((ach, index) => (
             <div
               key={index}
-              className="mb-4 p-4 rounded-lg shadow-md bg-base-200 border border-gray-300 dark:border-gray-700"
+              className="mb-4 p-4 rounded-lg border"
             >
               <h3 className="text-xl font-bold">{ach.title}</h3>
-              <p className="text-gray-500">{ach.year}</p>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-800">{ach.year}</p>
+              <p className="text-gray-800">
                 {ach.extraInformation}
               </p>
             </div>
@@ -122,7 +122,7 @@ const Template3 = ({ data }) => {
         {/* Languages Section */}
         <section>
           <h2 className="text-2xl font-semibold text-secondary">Languages</h2>
-          <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc pl-6 text-gray-800">
             {data.languages.map((lang, index) => (
               <li key={index}>{lang.name}</li>
             ))}
@@ -133,7 +133,7 @@ const Template3 = ({ data }) => {
         {/* Interests Section */}
         <section>
           <h2 className="text-2xl font-semibold text-secondary">Interests</h2>
-          <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc pl-6 text-gray-800">
             {data.interests.map((interest, index) => (
               <li key={index}>{interest.name}</li>
             ))}

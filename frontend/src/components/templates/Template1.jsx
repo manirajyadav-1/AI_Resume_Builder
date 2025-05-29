@@ -6,7 +6,7 @@ const Template1 = ({ data }) => {
   return (
     <div
       ref={resumeRef}
-      className="max-w-4xl rounded-lg p-8"
+      className="max-w-5xl rounded-lg p-8"
     >
       {/* Header Section */}
       <div className="text-center space-y-2">

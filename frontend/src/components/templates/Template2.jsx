@@ -3,7 +3,7 @@ import React, { useRef } from "react";
 const Template2 = ({ data }) => {
   const resumeRef = useRef(null);
   return (
-    <div ref={resumeRef} className="flex bg-white">
+    <div ref={resumeRef} className="max-w-5xl flex bg-white">
       {/* Sidebar */}
       <aside className="w-1/3 bg-gray-100 p-6 text-black">
         <h1 className="text-xl font-bold">
@@ -13,15 +13,15 @@ const Template2 = ({ data }) => {
         <p>{data.personalInformation.email}</p>
         <p>{data.personalInformation.phoneNumber}</p>
 
-        <section>
+        <section className="mt-6">
           <h2 className="text-xl font-semibold">Summary</h2>
           <p>{data.summary}</p>
         </section>
 
         {/* Skills Section */}
-        <section>
+        <section className="mt-6">
           <h2 className="text-2xl font-semibold text-secondary">Skills</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-2">
+          <div className="grid grid-cols-1 gap-4 mt-2">
             {data.skills.map((skill, index) => (
               <div
                 key={index}
@@ -32,6 +32,26 @@ const Template2 = ({ data }) => {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* Languages Section */}
+        <section className="mt-6">
+          <h2 className="text-2xl font-semibold text-secondary">Languages</h2>
+          <ul className="list-disc pl-6 text-gray-800">
+            {data.languages.map((lang, index) => (
+              <li key={index}>{lang.name}</li>
+            ))}
+          </ul>
+        </section>
+
+        {/* Interests Section */}
+        <section className="mt-6">
+          <h2 className="text-2xl font-semibold text-secondary">Interests</h2>
+          <ul className="list-disc pl-6 text-gray-800">
+            {data.interests.map((interest, index) => (
+              <li key={index}>{interest.name}</li>
+            ))}
+          </ul>
         </section>
       </aside>
 
@@ -44,14 +64,14 @@ const Template2 = ({ data }) => {
           {data.experience.map((exp, index) => (
             <div
               key={index}
-              className="mb-4 p-4 rounded-lg shadow-md bg-base-200 border border-gray-300 dark:border-gray-700"
+              className="mb-4 p-4 rounded-lg border"
             >
-              <h3 className="text-xl font-bold">{exp.jobTitle}</h3>
-              <p className="text-gray-500">
+              <h3 className="text-xl text-gray-900 font-bold">{exp.jobTitle}</h3>
+              <p className="text-gray-900">
                 {exp.company} | {exp.location}
               </p>
-              <p className="text-gray-400">{exp.duration}</p>
-              <p className="mt-2 text-gray-600 dark:text-gray-300">
+              <p className="text-gray-800">{exp.duration}</p>
+              <p className="mt-2 text-gray-800">
                 {exp.responsibility}
               </p>
             </div>
@@ -66,13 +86,13 @@ const Template2 = ({ data }) => {
           {data.education.map((edu, index) => (
             <div
               key={index}
-              className="mb-4 p-4 rounded-lg shadow-md bg-base-200 border border-gray-300 dark:border-gray-700"
+              className="mb-4 p-4 rounded-lg border"
             >
-              <h3 className="text-xl font-bold">{edu.degree}</h3>
-              <p className="text-gray-500">
+              <h3 className="text-xl text-gray-800 font-bold">{edu.degree}</h3>
+              <p className="text-gray-800">
                 {edu.university}, {edu.location}
               </p>
-              <p className="text-gray-400">
+              <p className="text-gray-800">
                 🎓 Graduation Year: {edu.graduationYear}
               </p>
             </div>
@@ -89,10 +109,10 @@ const Template2 = ({ data }) => {
           {data.certifications.map((cert, index) => (
             <div
               key={index}
-              className="mb-4 p-4 rounded-lg shadow-md bg-base-200 border border-gray-300 dark:border-gray-700"
+              className="mb-4 p-4 rounded-lg border"
             >
-              <h3 className="text-xl font-bold">{cert.title}</h3>
-              <p className="text-gray-500">
+              <h3 className="text-xl text-gray-800 font-bold">{cert.title}</h3>
+              <p className="text-gray-800">
                 {cert.issuingOrganization} - {cert.year}
               </p>
             </div>
@@ -105,15 +125,13 @@ const Template2 = ({ data }) => {
         <section>
           <h2 className="text-2xl font-semibold text-secondary">Projects</h2>
           {data.projects.map((proj, index) => (
-            <div
-              key={index}
-              className="mb-4 p-4 rounded-lg shadow-md bg-base-200 border border-gray-300 dark:border-gray-700"
+            <div key={index} className="mb-4 p-4 rounded-lg border"
             >
-              <h3 className="text-xl font-bold">{proj.title}</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <h3 className="text-xl text-gray-800 font-bold">{proj.title}</h3>
+              <p className="text-gray-800">
                 {proj.description}
               </p>
-              <p className="text-gray-500">
+              <p className="text-gray-800">
                 🛠 Technologies: {proj.technologiesUsed.join(", ")}
               </p>
               {proj.githubLink && (
@@ -140,39 +158,15 @@ const Template2 = ({ data }) => {
           {data.achievements.map((ach, index) => (
             <div
               key={index}
-              className="mb-4 p-4 rounded-lg shadow-md bg-base-200 border border-gray-300 dark:border-gray-700"
+              className="mb-4 p-4 rounded-lg border"
             >
-              <h3 className="text-xl font-bold">{ach.title}</h3>
-              <p className="text-gray-500">{ach.year}</p>
-              <p className="text-gray-600 dark:text-gray-300">
+              <h3 className="text-xl text-gray-800 font-bold">{ach.title}</h3>
+              <p className="text-gray-800">{ach.year}</p>
+              <p className="text-gray-800">
                 {ach.extraInformation}
               </p>
             </div>
           ))}
-        </section>
-
-        <div className="divider"></div>
-
-        {/* Languages Section */}
-        <section>
-          <h2 className="text-2xl font-semibold text-secondary">Languages</h2>
-          <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300">
-            {data.languages.map((lang, index) => (
-              <li key={index}>{lang.name}</li>
-            ))}
-          </ul>
-        </section>
-
-        <div className="divider"></div>
-
-        {/* Interests Section */}
-        <section>
-          <h2 className="text-2xl font-semibold text-secondary">Interests</h2>
-          <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300">
-            {data.interests.map((interest, index) => (
-              <li key={index}>{interest.name}</li>
-            ))}
-          </ul>
         </section>
       </main>
     </div>

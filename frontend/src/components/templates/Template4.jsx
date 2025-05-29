@@ -4,7 +4,7 @@ import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 const Template4 = ({ data }) => {
   const resumeRef = useRef(null);
   return (
-    <div ref={resumeRef} className="max-w-4xl p-8 bg-white text-gray-900 font-sans space-y-6">
+    <div ref={resumeRef} className="max-w-5xl p-8 bg-white text-gray-900 font-sans space-y-6">
       <header className="text-center">
         <h1 className="text-4xl font-bold">{data.personalInformation.fullName}</h1>
         <p className="flex justify-center gap-4 mt-2 text-sm">
