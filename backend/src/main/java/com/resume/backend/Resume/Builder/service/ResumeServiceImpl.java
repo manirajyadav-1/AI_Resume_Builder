@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Service
 public class ResumeServiceImpl implements ResumeService {
-    private ChatClient chatClient;
+    final private ChatClient chatClient;
 
     public ResumeServiceImpl(ChatClient.Builder builder) {
         this.chatClient = builder.build();
@@ -31,7 +31,6 @@ public class ResumeServiceImpl implements ResumeService {
         Prompt prompt = new Prompt(promptContent);
         String response = chatClient.prompt(prompt).call().content();
         Map<String, Object> stringObjectMap = parseMultipleResponses(response);
-        //modify :
         return stringObjectMap;
     }
 
@@ -43,10 +42,9 @@ public class ResumeServiceImpl implements ResumeService {
 
     String putValuesToTemplate(String template, Map<String, String> values) {
         for (Map.Entry<String, String> entry : values.entrySet()) {
-
             template = template.replace("{{" + entry.getKey() + "}}", entry.getValue());
-
         }
+
         return template;
     }
 

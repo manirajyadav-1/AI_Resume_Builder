@@ -26,15 +26,10 @@ public class ResumeController {
             Map<String, Object> jsonObject = resumeService.generateResumeResponse(resumeRequest.userDescription());
             return new ResponseEntity<>(jsonObject, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace(); // log properly in production
+            e.printStackTrace();
             return new ResponseEntity<>(Map.of("error", "Failed to generate resume. Please try again later."),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//    @PostMapping("/generate")
-//    public ResponseEntity< Map<String, Object>> getResumeData(@RequestBody ResumeRequest resumeRequest) throws IOException {
-//        Map<String, Object> jsonObject = resumeService.generateResumeResponse(resumeRequest.userDescription());
-//        return new ResponseEntity<>(jsonObject, HttpStatus.OK);
-//    }
 
 }
