@@ -38,6 +38,20 @@ const LoginSignup = () => {
                   Sign in with Google
                 </button>
 
+                {/* GitHub Sign-In */}
+                <button
+                  type="button"
+                  className="flex items-center justify-center bg-base-300 py-4 mb-6 text-sm font-medium transition duration-300 rounded-2xl text-grey-900 bg-grey-300 hover:bg-grey-400 focus:ring-4 focus:ring-grey-300"
+                >
+                  <img
+                    src="https://www.svgrepo.com/show/303615/github-icon-1-logo.svg"
+                    alt="GitHub"
+                    className="h-5 mr-2 bg-gray-100 rounded-full"
+                  />
+                  Sign in with GitHub
+                </button>
+
+
                 {/* Divider */}
                 <div className="flex items-center mb-3">
                   <hr className="h-0 border-b border-solid border-grey-500 grow" />
