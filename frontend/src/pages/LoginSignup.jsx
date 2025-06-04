@@ -25,40 +25,6 @@ const LoginSignup = () => {
                 <h3 className="mb-3 text-4xl font-extrabold text-dark-grey-900">Sign In</h3>
                 <p className="mb-4 text-grey-700">Enter your email and password</p>
 
-                {/* Google Sign-In */}
-                <button
-                  type="button"
-                  className="flex items-center justify-center bg-base-300  py-4 mb-6 text-sm font-medium transition duration-300 rounded-2xl text-grey-900 bg-grey-300 hover:bg-grey-400 focus:ring-4 focus:ring-grey-300"
-                >
-                  <img
-                    src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/motion-tailwind/img/logos/logo-google.png"
-                    alt="Google"
-                    className="h-5 mr-2"
-                  />
-                  Sign in with Google
-                </button>
-
-                {/* GitHub Sign-In */}
-                <button
-                  type="button"
-                  className="flex items-center justify-center bg-base-300 py-4 mb-6 text-sm font-medium transition duration-300 rounded-2xl text-grey-900 bg-grey-300 hover:bg-grey-400 focus:ring-4 focus:ring-grey-300"
-                >
-                  <img
-                    src="https://www.svgrepo.com/show/303615/github-icon-1-logo.svg"
-                    alt="GitHub"
-                    className="h-5 mr-2 bg-gray-100 rounded-full"
-                  />
-                  Sign in with GitHub
-                </button>
-
-
-                {/* Divider */}
-                <div className="flex items-center mb-3">
-                  <hr className="h-0 border-b border-solid border-grey-500 grow" />
-                  <span className="mx-4 text-grey-600">or</span>
-                  <hr className="h-0 border-b border-solid border-grey-500 grow" />
-                </div>
-
                 {/* Email Field */}
                 <label htmlFor="email" className="mb-2 text-sm text-start text-grey-900">
                   Email*
@@ -69,7 +35,7 @@ const LoginSignup = () => {
                   placeholder="mail@loopple.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-5 py-4 mb-7 text-sm font-medium bg-grey-200 text-dark-grey-900 rounded-2xl outline-none focus:bg-grey-400 placeholder:text-grey-700"
+                  className="w-full px-5 py-4 mb-7 text-sm font-medium border bg-grey-200 text-dark-grey-900 rounded-2xl outline-none focus:bg-grey-400 placeholder:text-grey-700"
                   required
                 />
 
@@ -83,7 +49,7 @@ const LoginSignup = () => {
                   placeholder="Enter a password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-5 py-4 mb-5 text-sm font-medium bg-grey-200 text-dark-grey-900 rounded-2xl outline-none focus:bg-grey-400 placeholder:text-grey-700"
+                  className="w-full px-5 py-4 mb-5 text-sm font-medium bg-grey-200 border text-dark-grey-900 rounded-2xl outline-none focus:bg-grey-400 placeholder:text-grey-700"
                   required
                 />
 
@@ -96,12 +62,45 @@ const LoginSignup = () => {
                 </button>
 
                 {/* Footer Link */}
-                <p className="text-sm text-grey-900">
+                <p className="text-sm text-grey-900 mb-5">
                   Not registered yet?{" "}
                   <a href="#" className="font-bold text-grey-700">
                     Create an Account
                   </a>
                 </p>
+
+                {/* Divider */}
+                <div className="flex items-center mb-5">
+                  <hr className="h-0 border-b border-solid border-grey-500 grow" />
+                  <span className="mx-4 text-grey-600">or</span>
+                  <hr className="h-0 border-b border-solid border-grey-500 grow" />
+                </div>
+
+                {/* Google Sign-In */}
+                <button
+                  type="button"
+                  className="flex items-center justify-center bg-base-300  py-4 mb-2 text-sm font-medium transition duration-300 rounded-2xl text-grey-900 bg-grey-300 hover:bg-grey-400 focus:ring-4 focus:ring-grey-300"
+                >
+                  <img
+                    src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/motion-tailwind/img/logos/logo-google.png"
+                    alt="Google"
+                    className="h-5 mr-2"
+                  />
+                  Sign in with Google
+                </button>
+
+                {/* GitHub Sign-In */}
+                <button
+                  type="button"
+                  className="flex items-center justify-center bg-base-300 py-4 mb- text-sm font-medium transition duration-300 rounded-2xl text-grey-900 bg-grey-300 hover:bg-grey-400 focus:ring-4 focus:ring-grey-300"
+                >
+                  <img
+                    src="https://www.svgrepo.com/show/303615/github-icon-1-logo.svg"
+                    alt="GitHub"
+                    className="h-5 mr-2 bg-gray-100 rounded-full"
+                  />
+                  Sign in with GitHub
+                </button>
               </form>
             </div>
           </div>
