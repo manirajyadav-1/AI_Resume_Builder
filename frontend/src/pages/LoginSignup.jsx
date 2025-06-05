@@ -3,14 +3,12 @@ import React, { useState } from "react";
 const LoginSignup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [keepLoggedIn, setKeepLoggedIn] = useState(true);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Email:", email);
     console.log("Password:", password);
-    console.log("Keep me logged in:", keepLoggedIn);
-  };
+    };
 
   return (
     <div className="py-[-10px]">
