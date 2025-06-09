@@ -30,7 +30,7 @@ const LoginSignup = () => {
                 <input
                   id="email"
                   type="email"
-                  placeholder="mail@loopple.com"
+                  placeholder="johndoe@gmail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-5 py-4 mb-7 text-sm font-medium border bg-grey-200 text-dark-grey-900 rounded-2xl outline-none focus:bg-grey-400 placeholder:text-grey-700"

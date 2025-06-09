@@ -52,7 +52,7 @@ const LandingPage = () => {
             <div className="card bg-base-200 shadow-xl">
               <div className="card-body items-center text-center">
                 <div className="text-4xl mb-4">💼</div>
-                <h3 className="card-title">Job-Specific Resumes</h3>
+                <h3 className="card-title">Industry-Standard Resumes</h3>
                 <p>
                   Optimize your resume for specific job roles and industries.
                 </p>
