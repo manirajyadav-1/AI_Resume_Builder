@@ -1,7 +1,35 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
+  const [userEmail, setUserEmail] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/api/v1/resume/success", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log("Login Response:", response);
+        setUserEmail(response.data); 
+      })
+      .catch((error) => {
+        console.error("Login Error:", error.message);
+        setUserEmail(null);
+      });
+  }, []);
+
+  const handleLogout = () => {
+    axios
+      .post("http://localhost:8080/api/v1/resume/logout", {}, { withCredentials: true })
+      .then(() => {
+        setUserEmail(null);
+        window.location.href = "/";
+      })
+      .catch((err) => console.error("Logout failed", err));
+  };
+
   return (
     <div className="navbar max-h-10 fixed z-10 justify-between bg-base-100 shadow-md">
       <div className="navbar-start">
@@ -36,29 +64,47 @@ const Navbar = () => {
             <li>
               <Link to={"/contact"}>Contact</Link>
             </li>
-            <li>
-                <Link to={"/login"} className="btn">Login</Link>
-            </li>
+            {!userEmail ? (
+              <li>
+                <Link to={"/login"} className="btn">
+                  Login
+                </Link>
+              </li>
+            ) : (
+              <>
+                <li className="text-sm p-2">{userEmail}</li>
+                <li>
+                  <button className="btn btn-error" onClick={handleLogout}>
+                    Logout
+                  </button>
+                </li>
+              </>
+            )}
           </ul>
         </div>
         <Link to={"/"} className="btn btn-ghost text-xl">
           AI Resume Builder
         </Link>
       </div>
+
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          {/* <li>
-            <Link to={"/about"}>About</Link>
-          </li>
-          <li>
-            <Link to={"/services"}>Services</Link>
-          </li>
-          <li>
-            <Link to={"/contact"}>Contact</Link>
-          </li> */}
-          <li>
-            <Link to={"/login"} className="btn">Login</Link>
-          </li>
+          {!userEmail ? (
+            <li>
+              <Link to={"/login"} className="btn">
+                Login
+              </Link>
+            </li>
+          ) : (
+            <>
+              <li className="p-2 font-medium">{userEmail}</li>
+              <li>
+                <button className="btn btn-error" onClick={handleLogout}>
+                  Logout
+                </button>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </div>
