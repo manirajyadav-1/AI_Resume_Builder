@@ -8,7 +8,8 @@ const LoginSignup = () => {
     e.preventDefault();
     console.log("Email:", email);
     console.log("Password:", password);
-    };
+  };
+
 
   return (
     <div className="py-[-10px]">
@@ -75,30 +76,35 @@ const LoginSignup = () => {
                 </div>
 
                 {/* Google Sign-In */}
-                <button
+                <a href="http://localhost:8080/oauth2/authorization/google">
+                  <button
                   type="button"
                   className="flex items-center justify-center bg-base-300  py-4 mb-2 text-sm font-medium transition duration-300 rounded-2xl text-grey-900 bg-grey-300 hover:bg-grey-400 focus:ring-4 focus:ring-grey-300"
-                >
-                  <img
-                    src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/motion-tailwind/img/logos/logo-google.png"
-                    alt="Google"
-                    className="h-5 mr-2"
-                  />
-                  Sign in with Google
-                </button>
+                  >
+                    <img
+                      src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/motion-tailwind/img/logos/logo-google.png"
+                      alt="Google"
+                      className="h-5 mr-2"
+                    />
+                    Sign in with Google
+                  </button>
+                </a>
+                
 
-                {/* GitHub Sign-In */}
-                <button
-                  type="button"
-                  className="flex items-center justify-center bg-base-300 py-4 mb- text-sm font-medium transition duration-300 rounded-2xl text-grey-900 bg-grey-300 hover:bg-grey-400 focus:ring-4 focus:ring-grey-300"
-                >
-                  <img
-                    src="https://www.svgrepo.com/show/303615/github-icon-1-logo.svg"
-                    alt="GitHub"
-                    className="h-5 mr-2 bg-gray-100 rounded-full"
-                  />
-                  Sign in with GitHub
-                </button>
+                {/* GitHub Sign-In (optional) */}
+                <a href="http://localhost:8080/oauth2/authorization/github">
+                  <button
+                    type="button"
+                    className="flex items-center justify-center py-4 text-sm font-medium transition duration-300 rounded-2xl text-grey-900 bg-grey-300 hover:bg-grey-400 focus:ring-4 focus:ring-grey-300"
+                  >
+                    <img
+                      src="https://www.svgrepo.com/show/303615/github-icon-1-logo.svg"
+                      alt="GitHub"
+                      className="h-5 mr-2"
+                    />
+                    Sign in with GitHub
+                  </button>
+                </a>
               </form>
             </div>
           </div>
