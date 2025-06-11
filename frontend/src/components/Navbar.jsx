@@ -1,36 +1,40 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import LoginSignup from "../pages/LoginSignup";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
-  const [userEmail, setUserEmail] = useState(null);
+  const { userEmail, logout } = useAuth();
+  const [showModal, setShowModal] = useState(false);
+  //const [userEmail, setUserEmail] = useState(null);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/v1/resume/success", {
-        withCredentials: true,
-      })
-      .then((response) => {
-        console.log("Login Response:", response);
-        setUserEmail(response.data); 
-      })
-      .catch((error) => {
-        console.error("Login Error:", error.message);
-        setUserEmail(null);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:8080/api/v1/resume/success", {
+  //       withCredentials: true,
+  //     })
+  //     .then((response) => {
+  //       console.log("Login Response:", response);
+  //       setUserEmail(response.data); 
+  //     })
+  //     .catch((error) => {
+  //       console.error("Login Error:", error.message);
+  //       setUserEmail(null);
+  //     });
+  // }, []);
 
-  const handleLogout = () => {
-    axios
-      .post("http://localhost:8080/api/v1/resume/logout", {}, { withCredentials: true })
-      .then(() => {
-        setUserEmail(null);
-        window.location.href = "/";
-      })
-      .catch((err) => console.error("Logout failed", err));
-  };
+  // const handleLogout = () => {
+  //   axios
+  //     .post("http://localhost:8080/api/v1/resume/logout", {}, { withCredentials: true })
+  //     .then(() => {
+  //       setUserEmail(null);
+  //       window.location.href = "/";
+  //     })
+  //     .catch((err) => console.error("Logout failed", err));
+  // };
 
   return (
+    <>
     <div className="navbar max-h-10 fixed z-10 justify-between bg-base-100 shadow-md">
       <div className="navbar-start">
         <div className="dropdown">
@@ -74,7 +78,7 @@ const Navbar = () => {
               <>
                 <li className="text-sm p-2">{userEmail}</li>
                 <li>
-                  <button className="btn btn-error" onClick={handleLogout}>
+                  <button className="btn btn-error" onClick={logout}>
                     Logout
                   </button>
                 </li>
@@ -91,15 +95,15 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">
           {!userEmail ? (
             <li>
-              <Link to={"/login"} className="btn">
+              <button className="btn" onClick={() => setShowModal(true)}>
                 Login
-              </Link>
+              </button>
             </li>
           ) : (
             <>
               <li className="p-2 font-medium">{userEmail}</li>
               <li>
-                <button className="btn btn-error" onClick={handleLogout}>
+                <button className="btn btn-error" onClick={logout}>
                   Logout
                 </button>
               </li>
@@ -108,6 +112,22 @@ const Navbar = () => {
         </ul>
       </div>
     </div>
+
+    {/* Modal Overlay */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 mt-[-20px] flex items-center justify-center bg-opacity-50">
+          <div className="relative bg-gray-800 rounded-md p-2 max-w-2xl w-full h-[90vh]">
+            <button
+              className="absolute top-2 right-4 text-xl font-bold text-gray-600 hover:text-white cursor-pointer"
+              onClick={() => setShowModal(false)}
+            >
+              ✕
+            </button>
+            <LoginSignup />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
