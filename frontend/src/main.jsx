@@ -8,22 +8,24 @@ import About from './pages/About'
 import Services from './pages/Services'
 import GenerateResume from './pages/GenerateResume'
 import { Toaster } from 'react-hot-toast'
-import LoginSignup from './pages/LoginSignup'
+import { AuthProvider } from './context/AuthContext'
+
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <Toaster />
-      <Routes>
-        <Route path="/" element={<Root />} >
-          <Route path="" element={<Home />}/>
-          <Route path="/about" element={<About />}/>
-          <Route path="/services" element={<Services />}/>
-          <Route path="/login" element={<LoginSignup />}/>
-          <Route path="/generate-resume" element={<GenerateResume />}/>
-        </Route>
-      </Routes>
+      <BrowserRouter>
+      <AuthProvider>
+        <Toaster />
+        <Routes>
+          <Route path="/" element={<Root />}>
+            <Route index element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="services" element={<Services />} />
+            <Route path="generate-resume" element={<GenerateResume />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
 )
