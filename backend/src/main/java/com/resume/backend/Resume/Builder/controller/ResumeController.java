@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
@@ -58,21 +57,35 @@ public class ResumeController {
     }
 
     @PostMapping("/auth/signup")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
-        User savedUser = userService.signup(user);
-        return ResponseEntity.ok(savedUser);
+    public ResponseEntity<?> register(@RequestBody User user) {
+        try {
+            if (userRepository.existsByEmail(user.getEmail())) {
+                return ResponseEntity
+                        .status(HttpStatus.CONFLICT)
+                        .body("Email already in use");
+            }
+            User createdUser = userService.signup(user);
+            return ResponseEntity.ok(createdUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Signup failed: " + e.getMessage());
+        }
     }
 
     @PostMapping("/auth/login")
     public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginDto loginDto) {
+
         User user = userService.loginUser(loginDto);
-        String jwtToken = jwtService.generateToken(new HashMap<>(), (UserDetails) user);
+
+        String jwtToken = jwtService.generateToken(new HashMap<>(), user);
 
         LoginResponse loginResponse = new LoginResponse();
+
         loginResponse.setToken(jwtToken);
         loginResponse.setTokenExpireTime(jwtService.getExpirationTime());
 
         return ResponseEntity.ok(loginResponse);
+
     }
 
     @GetMapping("/success")
