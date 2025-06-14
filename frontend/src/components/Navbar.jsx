@@ -6,32 +6,6 @@ import { useAuth } from "../context/AuthContext";
 const Navbar = () => {
   const { userEmail, logout } = useAuth();
   const [showModal, setShowModal] = useState(false);
-  //const [userEmail, setUserEmail] = useState(null);
-
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:8080/api/v1/resume/success", {
-  //       withCredentials: true,
-  //     })
-  //     .then((response) => {
-  //       console.log("Login Response:", response);
-  //       setUserEmail(response.data); 
-  //     })
-  //     .catch((error) => {
-  //       console.error("Login Error:", error.message);
-  //       setUserEmail(null);
-  //     });
-  // }, []);
-
-  // const handleLogout = () => {
-  //   axios
-  //     .post("http://localhost:8080/api/v1/resume/logout", {}, { withCredentials: true })
-  //     .then(() => {
-  //       setUserEmail(null);
-  //       window.location.href = "/";
-  //     })
-  //     .catch((err) => console.error("Logout failed", err));
-  // };
 
   return (
     <>
