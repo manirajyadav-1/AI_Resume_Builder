@@ -1,5 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
+import Cookies from "universal-cookie";
 
 const AuthContext = createContext();
 
@@ -7,47 +9,72 @@ export const AuthProvider = ({ children }) => {
   const [userEmail, setUserEmail] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const cookies = new Cookies();
+
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/v1/resume/success", {
-        withCredentials: true,
-      })
-      .then((response) => {
-        setUserEmail(response.data.email);
-        setIsAuthenticated(true);
-      })
-      .catch(() => {
-        setUserEmail(null);
-        setIsAuthenticated(false);
-      });
+    fetchUser();
   }, []);
 
-  const signup = async (email, password) => {
-    await axios.post(
-      "http://localhost:8080/api/v1/resume/auth/signup",
-      { email, password },
-      { withCredentials: true }
-    );
-    await fetchUser();
+  const signup = async (name, email, password) => {
+    try {
+      await axios.post(
+        "http://localhost:8080/api/v1/resume/auth/signup",
+        { name, email, password },
+        {
+          headers: { "Content-Type": "application/json" }
+        }
+      );
+      toast.success("Registered Successfully!", {
+        duration: 3000,
+        position: "top-center",
+      });
+    } catch (error) {
+      if (error.response?.status === 409) {
+        toast.error("Email already exists!", {
+          duration: 3000,
+          position: "top-center",
+        });
+      } else {
+        console.error("Signup failed:", error.response?.data || error.message);
+        throw error;
+      }
+    }
   };
 
   const login = async (email, password) => {
-    await axios.post(
-      "http://localhost:8080/api/v1/resume/auth/login",
-      { email, password },
-      { withCredentials: true }
-    );
-    await fetchUser();
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/resume/auth/login",
+        { email, password },
+        {
+          headers: { "Content-Type": "application/json" }
+        }
+      );
+      const token = response.data.token;
+      cookies.set("token", token);
+      toast.success("Logged in Successfully!", {
+        duration: 3000,
+        position: "top-center",
+      });
+      await fetchUser();
+    } catch (error) {
+      console.error("Login failed:", error.response?.data || error.message);
+      throw error;
+    }
   };
 
   const logout = async () => {
-    await axios.post(
-      "http://localhost:8080/api/v1/resume/logout",
-      {},
-      { withCredentials: true }
-    );
-    setUserEmail(null);
-    setIsAuthenticated(false);
+    try {
+      await axios.post(
+        "http://localhost:8080/api/v1/resume/logout",
+        {},
+        { withCredentials: true }
+      );
+      setUserEmail(null);
+      setIsAuthenticated(false);
+    } catch (error) {
+      console.error("Logout failed:", error.message);
+    }
   };
 
   const fetchUser = async () => {
@@ -64,7 +91,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ userEmail, isAuthenticated, signup, login, logout }}>
+    <AuthContext.Provider
+      value={{ userEmail, isAuthenticated, signup, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
