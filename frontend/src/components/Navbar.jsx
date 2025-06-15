@@ -4,7 +4,7 @@ import LoginSignup from "../pages/LoginSignup";
 import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
-  const { userEmail, logout } = useAuth();
+  const { userDetails, logout } = useAuth();
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -42,7 +42,7 @@ const Navbar = () => {
             <li>
               <Link to={"/contact"}>Contact</Link>
             </li>
-            {!userEmail ? (
+            {!userDetails ? (
               <li>
                 <Link to={"/login"} className="btn">
                   Login
@@ -50,7 +50,7 @@ const Navbar = () => {
               </li>
             ) : (
               <>
-                <li className="text-sm p-2">{userEmail}</li>
+                <li className="text-sm p-2">{userDetails.name}</li>
                 <li>
                   <button className="btn btn-error" onClick={logout}>
                     Logout
@@ -67,7 +67,7 @@ const Navbar = () => {
 
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          {!userEmail ? (
+          {!userDetails ? (
             <li>
               <button className="btn" onClick={() => setShowModal(true)}>
                 Login
@@ -75,7 +75,7 @@ const Navbar = () => {
             </li>
           ) : (
             <>
-              <li className="p-2 font-medium">{userEmail}</li>
+              <li className="p-2 font-medium">{userDetails.name}</li>
               <li>
                 <button className="btn btn-error" onClick={logout}>
                   Logout
