@@ -6,7 +6,7 @@ import Cookies from "universal-cookie";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [userEmail, setUserEmail] = useState(null);
+  const [userDetails, setUserDetails] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const cookies = new Cookies();
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
         {},
         { withCredentials: true }
       );
-      setUserEmail(null);
+      setUserDetails(null);
       setIsAuthenticated(false);
     } catch (error) {
       console.error("Logout failed:", error.message);
@@ -79,20 +79,27 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/v1/resume/success", {
+      const res = await axios.get("http://localhost:8080/api/v1/resume/jwt/success", { 
+      headers : {
+        Authorization : `Bearer ${cookies.get("token")}`,
+      }
+    },
+      {
         withCredentials: true,
       });
-      setUserEmail(res.data.email);
+      console.log(res.data);
+      
+      setUserDetails(res.data);
       setIsAuthenticated(true);
     } catch {
-      setUserEmail(null);
+      setUserDetails(null);
       setIsAuthenticated(false);
     }
   };
 
   return (
     <AuthContext.Provider
-      value={{ userEmail, isAuthenticated, signup, login, logout }}
+      value={{ userDetails, isAuthenticated, signup, login, logout }}
     >
       {children}
     </AuthContext.Provider>
