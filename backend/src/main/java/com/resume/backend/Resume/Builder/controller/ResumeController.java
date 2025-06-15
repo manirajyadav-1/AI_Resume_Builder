@@ -88,7 +88,16 @@ public class ResumeController {
 
     }
 
-    @GetMapping("/success")
+    @GetMapping("/jwt/success")
+    public ResponseEntity<User> getCurrentUser(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        String email = JWTService.extractUsername(token);
+
+        User user = userService.getUserByEmail(email);
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/oauth2/success")
     public ResponseEntity<Map<String, Object>> loginSuccess(
             @AuthenticationPrincipal(expression = "name") String username,
             @AuthenticationPrincipal OAuth2User oAuth2User,
