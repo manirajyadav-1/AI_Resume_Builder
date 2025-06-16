@@ -9,8 +9,10 @@ import com.resume.backend.Resume.Builder.respository.UserRepository;
 import com.resume.backend.Resume.Builder.service.JWTService;
 import com.resume.backend.Resume.Builder.service.ResumeService;
 import com.resume.backend.Resume.Builder.service.UserService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/resume")
@@ -98,27 +101,33 @@ public class ResumeController {
     }
 
     @GetMapping("/oauth2/success")
-    public ResponseEntity<Map<String, Object>> loginSuccess(
-            @AuthenticationPrincipal(expression = "name") String username,
-            @AuthenticationPrincipal OAuth2User oAuth2User,
-            Authentication authentication) {
+    public ResponseEntity<Map<String, Object>> user(@AuthenticationPrincipal OAuth2User principal) {
+        if (principal != null) {
+            String email = principal.getAttribute("email");
+            String name = principal.getAttribute("name");
+            String picture = principal.getAttribute("picture");
 
-        Map<String, Object> response = new HashMap<>();
+            Optional<User> existingUser = userRepository.findByEmail(email);
 
-        if (authentication != null) {
-            response.put("authorities", authentication.getAuthorities());
-
-            if (authentication.getPrincipal() instanceof OAuth2User) {
-                response.put("email", oAuth2User.getAttribute("email"));
-                response.put("name", oAuth2User.getAttribute("name"));
-                response.put("type", "oauth2");
-            } else if (authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
-                response.put("username", username);
-                response.put("type", "jwt");
+            if (existingUser.isEmpty()) {
+                User newUser = new User();
+                newUser.setEmail(email);
+                newUser.setName(name);
+                newUser.setPicture(picture);
+                userRepository.save(newUser);
             }
-        }
 
-        return ResponseEntity.ok(response);
+            return ResponseEntity.ok(Map.of(
+                    "name", name,
+                    "email", email,
+                    "picture", picture,
+                    "provider", "oauth2"
+            ));
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "User is not authenticated"));
+        }
     }
 
     @PostMapping("/logout")
