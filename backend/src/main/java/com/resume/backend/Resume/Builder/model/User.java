@@ -21,6 +21,8 @@ public class User implements UserDetails {
 
     private String password;
 
+    private String picture;
+
     private String provider;
 
     public User() {
@@ -39,12 +41,12 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.email; // use email as username
+        return this.email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // adjust as per your logic
+        return true;
     }
 
     @Override
@@ -62,7 +64,6 @@ public class User implements UserDetails {
         return true;
     }
 
-    // ✅ Getters & Setters
 
     public Long getId() {
         return id;
@@ -76,12 +77,20 @@ public class User implements UserDetails {
         this.name = name;
     }
 
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
     @Override
     public String getPassword() {
         return password;
     }
 
-    // Note: setPassword comes from your field, not from UserDetails
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -90,7 +99,7 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    // Note: getUsername() already returns email
+
     public String getEmail() {
         return email;
     }
