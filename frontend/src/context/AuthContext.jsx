@@ -78,22 +78,31 @@ export const AuthProvider = ({ children }) => {
   };
 
   const fetchUser = async () => {
-    try {
-      const res = await axios.get("http://localhost:8080/api/v1/resume/jwt/success", { 
-      headers : {
-        Authorization : `Bearer ${cookies.get("token")}`,
-      }
-    },
-      {
+  try {
+    const token = cookies.get("token");
+
+    if (token) {
+      const res = await axios.get("http://localhost:8080/api/v1/resume/jwt/success", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
+      setUserDetails(res.data);
+      setIsAuthenticated(true);
+    } else {
+      const res = await axios.get("http://localhost:8080/api/v1/resume/oauth2/success", {
         withCredentials: true,
       });
       console.log(res.data);
-      
       setUserDetails(res.data);
       setIsAuthenticated(true);
-    } catch {
+    }
+    } catch (error) {
       setUserDetails(null);
       setIsAuthenticated(false);
+      console.error("User fetch failed:", error.message);
     }
   };
 
