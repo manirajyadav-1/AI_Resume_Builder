@@ -68,7 +68,7 @@ const Navbar = () => {
                   <button className="btn" onClick={() => setShowModal(true)}>Login</button>
                 </li>
               ) : (
-                <div className="relative">
+                <div className="relative right-4">
                   <button
                     type="button"
                     className="flex items-center space-x-2 bg-gray-800 p-1 rounded-full focus:outline-none"
@@ -88,7 +88,6 @@ const Navbar = () => {
                       </div>
                       <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
                         <li><Link to="/dashboard" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Dashboard</Link></li>
-                        <li><Link to="/settings" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Settings</Link></li>
                         <li><button onClick={handleLogout} className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Sign out</button></li>
                       </ul>
                     </div>
