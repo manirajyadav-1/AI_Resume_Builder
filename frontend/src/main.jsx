@@ -9,6 +9,7 @@ import Services from './pages/Services'
 import GenerateResume from './pages/GenerateResume'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './context/AuthContext'
+import Dashboard from './pages/Dashboard'
 
 
 
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="about" element={<About />} />
             <Route path="services" element={<Services />} />
             <Route path="generate-resume" element={<GenerateResume />} />
+            <Route path="dashboard" element={<Dashboard />} />
           </Route>
         </Routes>
       </AuthProvider>
