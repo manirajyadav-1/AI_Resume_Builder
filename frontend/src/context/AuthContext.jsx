@@ -95,7 +95,6 @@ export const AuthProvider = ({ children }) => {
       const res = await axios.get("http://localhost:8080/api/v1/resume/oauth2/success", {
         withCredentials: true,
       });
-      console.log(res.data);
       setUserDetails(res.data);
       setIsAuthenticated(true);
     }
@@ -106,9 +105,33 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const saveResume = async (resumeContent, templateType) => {
+    try {
+      const token = cookies.get("token");
+
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/resume/save",
+        { ...resumeContent, templateType },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      toast.success("Resume saved to database!");
+      return response.data;
+    } catch (error) {
+      console.error("Resume save failed:", error.message);
+      toast.error("Failed to save resume.");
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ userDetails, isAuthenticated, signup, login, logout }}
+      value={{ userDetails, isAuthenticated, signup, login, logout, saveResume }}
     >
       {children}
     </AuthContext.Provider>
