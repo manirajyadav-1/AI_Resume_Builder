@@ -6,6 +6,7 @@ import { BiBook } from "react-icons/bi";
 import { useForm, useFieldArray } from "react-hook-form";
 import { FaPlusCircle } from "react-icons/fa";
 import ResumeTemplates from "../components/ResumeTemplates";
+import { useAuth } from "../context/AuthContext";
 
 const GenerateResume = () => {
   const [data, setData] = useState({
@@ -21,6 +22,8 @@ const GenerateResume = () => {
     languages: [],
     interests: [],
   });
+
+  const { saveResume } = useAuth();
 
   const { register, handleSubmit, control, reset } = useForm({
     defaultValues: data,
@@ -41,26 +44,29 @@ const GenerateResume = () => {
   const interestsFields = useFieldArray({ control, name: "interests" });
   const skillsFields = useFieldArray({ control, name: "skills" });
 
-  //handle form submit
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
-    setData({ ...data });
+  const onSubmit = async (data) => {
+    try {
+      console.log("Form Data:", data);
+      setData({ ...data });
 
-    setShowFormUI(false);
-    setShowPromptInput(false);
-    setShowResumeUI(true);
+      await saveResume(data, "template1"); 
+
+      setShowFormUI(false);
+      setShowPromptInput(false);
+      setShowResumeUI(true);
+    } catch (error) {
+      console.error("Error saving resume:", error.message);
+      toast.error("Failed to save resume. Please try again.");
+    }
   };
 
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleGenerate = async () => {
-    console.log(description);
-
     try {
       setLoading(true);
       const responseData = await generateResume(description);
-      console.log(responseData);
       reset(responseData.data);
 
       toast.success("Resume Generated Successfully!", {
@@ -103,7 +109,7 @@ const GenerateResume = () => {
           <div key={field.id} className="p-4 rounded-lg mb-4 bg-base-100">
             {keys.map((key) => (
               <div key={key}>
-                {console.log(`${name}`)}
+                {/* {console.log(`${name}`)} */}
                 {renderInput(`${name}.${index}.${key}`, key)}
               </div>
             ))}
