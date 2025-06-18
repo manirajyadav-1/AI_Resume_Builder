@@ -1,8 +1,11 @@
 package com.resume.backend.Resume.Builder.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.resume.backend.Resume.Builder.model.Resume;
+import com.resume.backend.Resume.Builder.respository.ResumeRepository;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +22,6 @@ public class ResumeServiceImpl implements ResumeService {
     public ResumeServiceImpl(ChatClient.Builder builder) {
         this.chatClient = builder.build();
     }
-
 
     @Override
     public   Map<String, Object> generateResumeResponse(String userResumeDescription) throws IOException {
@@ -52,7 +54,6 @@ public class ResumeServiceImpl implements ResumeService {
     public static Map<String, Object> parseMultipleResponses(String response) {
         Map<String, Object> jsonResponse = new HashMap<>();
 
-        // Extract content inside <think> tags
         int thinkStart = response.indexOf("<think>") + 7;
         int thinkEnd = response.indexOf("</think>");
         if (thinkStart != -1 && thinkEnd != -1) {
