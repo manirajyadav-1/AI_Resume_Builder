@@ -4,23 +4,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.resume.backend.Resume.Builder.Dto.LoginDto;
 import com.resume.backend.Resume.Builder.ResumeRequest;
 import com.resume.backend.Resume.Builder.loginresponse.LoginResponse;
+import com.resume.backend.Resume.Builder.model.Resume;
 import com.resume.backend.Resume.Builder.model.User;
 import com.resume.backend.Resume.Builder.respository.UserRepository;
-import com.resume.backend.Resume.Builder.service.JWTService;
-import com.resume.backend.Resume.Builder.service.ResumeService;
-import com.resume.backend.Resume.Builder.service.UserService;
-import jakarta.servlet.http.Cookie;
+import com.resume.backend.Resume.Builder.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -40,6 +37,9 @@ public class ResumeController {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private ResumeStorageService resumeStorageService;
 
     private final ResumeService resumeService;
 
@@ -136,4 +136,43 @@ public class ResumeController {
         response.setHeader("Set-Cookie", "JSESSIONID=; HttpOnly; Path=/; Max-Age=0; SameSite=None; Secure");
         return ResponseEntity.ok("Logged out successfully");
     }
+
+    @PostMapping("/save")
+    public ResponseEntity<?> saveResume(@RequestBody Map<String, Object> requestBody,
+                                        @RequestHeader(value = "Authorization", required = false) String authHeader,
+                                        @AuthenticationPrincipal OAuth2User principal) {
+        try {
+            String email = null;
+
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7);
+                email = JWTService.extractUsername(token);
+            } else if (principal != null) {
+                email = principal.getAttribute("email");
+            }
+
+            if (email == null || email.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized: Email not found.");
+            }
+
+            Resume resume = new Resume();
+            resume.setTemplateType((String) requestBody.getOrDefault("templateType", "default"));
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String contentJson = objectMapper.writeValueAsString(requestBody);
+            resume.setContentJson(contentJson);
+            resume.setCreatedAt(LocalDateTime.now());
+
+            resumeStorageService.save(resume, email);
+
+            return ResponseEntity.ok("Resume saved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to save resume: " + e.getMessage());
+        }
+    }
+
+
 }
