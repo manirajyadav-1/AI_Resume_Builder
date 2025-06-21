@@ -2,6 +2,7 @@ package com.resume.backend.Resume.Builder.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.resume.backend.Resume.Builder.Dto.LoginDto;
+import com.resume.backend.Resume.Builder.Dto.ResumeDTO;
 import com.resume.backend.Resume.Builder.ResumeRequest;
 import com.resume.backend.Resume.Builder.loginresponse.LoginResponse;
 import com.resume.backend.Resume.Builder.model.Resume;
@@ -138,7 +139,7 @@ public class ResumeController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> saveResume(@RequestBody Map<String, Object> requestBody,
+    public ResponseEntity<?> saveResume(@RequestBody ResumeDTO resumeDTO,
                                         @RequestHeader(value = "Authorization", required = false) String authHeader,
                                         @AuthenticationPrincipal OAuth2User principal) {
         try {
@@ -156,12 +157,12 @@ public class ResumeController {
                         .body("Unauthorized: Email not found.");
             }
 
-            Resume resume = new Resume();
-            resume.setTemplateType((String) requestBody.getOrDefault("templateType", "default"));
-
             ObjectMapper objectMapper = new ObjectMapper();
-            String contentJson = objectMapper.writeValueAsString(requestBody);
-            resume.setContentJson(contentJson);
+            String jsonContent = objectMapper.writeValueAsString(resumeDTO);
+
+            Resume resume = new Resume();
+            resume.setTemplateType(resumeDTO.getTemplateType());
+            resume.setContentJson(jsonContent);
             resume.setCreatedAt(LocalDateTime.now());
 
             resumeStorageService.save(resume, email);
@@ -169,10 +170,10 @@ public class ResumeController {
             return ResponseEntity.ok("Resume saved successfully");
 
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to save resume: " + e.getMessage());
         }
     }
-
 
 }
