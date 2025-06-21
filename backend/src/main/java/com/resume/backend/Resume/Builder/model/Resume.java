@@ -1,33 +1,47 @@
 package com.resume.backend.Resume.Builder.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+
 @Entity
+@Table(name = "resumes")
 public class Resume {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "template_type")
     private String templateType;
 
-    @Lob
-    @Column(columnDefinition = "TEXT")
-    private String content;
+    @Column(name = "content_json", columnDefinition = "TEXT")
+    private String contentJson;
 
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")  // Good practice to explicitly name the foreign key column
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
-    // No-args constructor
     public Resume() {}
 
-    // Getters and Setters
+    public Resume(String templateType, String contentJson, LocalDateTime createdAt, User user) {
+        this.templateType = templateType;
+        this.contentJson = contentJson;
+        this.createdAt = createdAt;
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTemplateType() {
@@ -38,12 +52,12 @@ public class Resume {
         this.templateType = templateType;
     }
 
-    public String getContent() {
-        return content;
+    public String getContentJson() {
+        return contentJson;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContentJson(String contentJson) {
+        this.contentJson = contentJson;
     }
 
     public LocalDateTime getCreatedAt() {
