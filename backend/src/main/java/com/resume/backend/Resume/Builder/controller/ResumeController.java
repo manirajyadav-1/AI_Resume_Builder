@@ -7,6 +7,7 @@ import com.resume.backend.Resume.Builder.ResumeRequest;
 import com.resume.backend.Resume.Builder.loginresponse.LoginResponse;
 import com.resume.backend.Resume.Builder.model.Resume;
 import com.resume.backend.Resume.Builder.model.User;
+import com.resume.backend.Resume.Builder.respository.ResumeRepository;
 import com.resume.backend.Resume.Builder.respository.UserRepository;
 import com.resume.backend.Resume.Builder.service.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,6 +36,9 @@ public class ResumeController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ResumeRepository resumeRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -138,42 +142,73 @@ public class ResumeController {
         return ResponseEntity.ok("Logged out successfully");
     }
 
+//    @PostMapping("/save")
+//    public ResponseEntity<?> saveOrUpdateResume(@RequestBody ResumeDTO resumeDTO, @RequestHeader(value = "Authorization", required = false) String authHeader, @AuthenticationPrincipal OAuth2User principal) {
+//        try {
+//            String email = null;
+//
+//            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+//                String token = authHeader.substring(7);
+//                email = JWTService.extractUsername(token);
+//            } else if (principal != null) {
+//                email = principal.getAttribute("email");
+//            }
+//
+//            if (email == null || email.isEmpty()) {
+//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+//                        .body("Unauthorized: Email not found.");
+//            }
+//
+//            User user = userRepository.findByEmail(email)
+//                    .orElseThrow(() -> new RuntimeException("User not found"));
+//
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            objectMapper.findAndRegisterModules();
+//
+//            String newJson = objectMapper.writeValueAsString(resumeDTO);
+//
+//            Optional<Resume> existingResumeOpt = resumeRepository.findByUserId(user.getId());
+//
+//            if (existingResumeOpt.isPresent()) {
+//                Resume existing = existingResumeOpt.get();
+//                if (existing.getContentJson().equals(newJson)) {
+//                    return ResponseEntity.ok("Resume already saved (no changes)");
+//                } else {
+//                    existing.setContentJson(newJson);
+//                    existing.setTemplateType(resumeDTO.getTemplateType());
+//                    existing.setCreatedAt(LocalDateTime.now());
+//                    resumeRepository.save(existing);
+//                    return ResponseEntity.ok("Resume updated successfully");
+//                }
+//            }
+//
+//            Resume newResume = new Resume();
+//            newResume.setTemplateType(resumeDTO.getTemplateType());
+//            newResume.setContentJson(newJson);
+//            newResume.setCreatedAt(LocalDateTime.now());
+//            newResume.setUser(user);
+//            resumeRepository.save(newResume);
+//
+//            return ResponseEntity.ok("Resume saved successfully");
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Failed to save or update resume: " + e.getMessage());
+//        }
+//    }
+
     @PostMapping("/save")
-    public ResponseEntity<?> saveResume(@RequestBody ResumeDTO resumeDTO,
-                                        @RequestHeader(value = "Authorization", required = false) String authHeader,
-                                        @AuthenticationPrincipal OAuth2User principal) {
+    public ResponseEntity<?> saveOrUpdateResume(@RequestBody ResumeDTO resumeDTO, @RequestHeader(value = "Authorization", required = false) String authHeader, @AuthenticationPrincipal OAuth2User principal) {
         try {
-            String email = null;
-
-            if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                String token = authHeader.substring(7);
-                email = JWTService.extractUsername(token);
-            } else if (principal != null) {
-                email = principal.getAttribute("email");
-            }
-
-            if (email == null || email.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body("Unauthorized: Email not found.");
-            }
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            String jsonContent = objectMapper.writeValueAsString(resumeDTO);
-
-            Resume resume = new Resume();
-            resume.setTemplateType(resumeDTO.getTemplateType());
-            resume.setContentJson(jsonContent);
-            resume.setCreatedAt(LocalDateTime.now());
-
-            resumeStorageService.save(resume, email);
-
-            return ResponseEntity.ok("Resume saved successfully");
-
+            String result = resumeStorageService.saveOrUpdate(resumeDTO, authHeader, principal);
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to save resume: " + e.getMessage());
+                    .body(e.getMessage());
         }
     }
+
+
 
 }
