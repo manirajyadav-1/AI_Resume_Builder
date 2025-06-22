@@ -55,8 +55,7 @@ const GenerateResume = () => {
       setShowPromptInput(false);
       setShowResumeUI(true);
     } catch (error) {
-      console.error("Error saving resume:", error.message);
-      toast.error("Failed to save resume. Please try again.");
+      toast.error("Error saving resume:", error.message);
     }
   };
 
