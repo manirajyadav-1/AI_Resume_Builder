@@ -249,6 +249,7 @@ const GenerateResume = () => {
             Generate Resume
           </button>
           <button
+            disabled={loading}
             onClick={handleClear}
             className="btn btn-secondary flex items-center gap-2"
           >
