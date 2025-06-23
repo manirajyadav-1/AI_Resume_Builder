@@ -33,9 +33,9 @@ public class ResumeStorageService {
                 email = jwtService.extractUsername(token);
             }
 
-            if ((email == null || email.isEmpty()) && principal != null) {
-                System.out.println("OAuth2 Principal: " + principal.getAttributes());
+            if ((email == null) || principal != null) {
                 email = principal.getAttribute("email");
+                System.out.println(email);
                 if (email == null) {
                     email = principal.getAttribute("preferred_username");
                 }

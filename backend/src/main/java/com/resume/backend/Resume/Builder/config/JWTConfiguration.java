@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+
 @Configuration
 public class JWTConfiguration {
     @Autowired
@@ -45,3 +46,4 @@ public class JWTConfiguration {
         return authProvider;
     }
 }
+
