@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
         "http://localhost:8080/api/v1/resume/auth/signup",
         { name, email, password },
         {
-          headers: { "Content-Type": "application/json" }
+          headers: { "Content-Type": "application/json" },
         }
       );
       toast.success("Registered Successfully!", {
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
         "http://localhost:8080/api/v1/resume/auth/login",
         { email, password },
         {
-          headers: { "Content-Type": "application/json" }
+          headers: { "Content-Type": "application/json" },
         }
       );
       const token = response.data.token;
@@ -78,26 +78,32 @@ export const AuthProvider = ({ children }) => {
   };
 
   const fetchUser = async () => {
-  try {
-    const token = cookies.get("token");
+    try {
+      const token = cookies.get("token");
 
-    if (token) {
-      const res = await axios.get("http://localhost:8080/api/v1/resume/jwt/success", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
-      });
+      if (token) {
+        const res = await axios.get(
+          "http://localhost:8080/api/v1/resume/jwt/success",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            withCredentials: true,
+          }
+        );
 
-      setUserDetails(res.data);
-      setIsAuthenticated(true);
-    } else {
-      const res = await axios.get("http://localhost:8080/api/v1/resume/oauth2/success", {
-        withCredentials: true,
-      });
-      setUserDetails(res.data);
-      setIsAuthenticated(true);
-    }
+        setUserDetails(res.data);
+        setIsAuthenticated(true);
+      } else {
+        const res = await axios.get(
+          "http://localhost:8080/api/v1/resume/oauth2/success",
+          {
+            withCredentials: true,
+          }
+        );
+        setUserDetails(res.data);
+        setIsAuthenticated(true);
+      }
     } catch (error) {
       setUserDetails(null);
       setIsAuthenticated(false);
@@ -109,16 +115,21 @@ export const AuthProvider = ({ children }) => {
     try {
       const token = cookies.get("token");
 
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/resume/save",
-        { ...resumeContent, templateType },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const config = {
+        method: "POST",
+        url: "http://localhost:8080/api/v1/resume/save",
+        data: { ...resumeContent, templateType },
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      };
+
+      if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      const response = await axios(config);
 
       toast.success("Resume saved to database!");
       return response.data;
@@ -131,7 +142,14 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ userDetails, isAuthenticated, signup, login, logout, saveResume }}
+      value={{
+        userDetails,
+        isAuthenticated,
+        signup,
+        login,
+        logout,
+        saveResume,
+      }}
     >
       {children}
     </AuthContext.Provider>
