@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/resume/success", "/api/v1/resume/save").authenticated()
+                        .requestMatchers("/api/v1/resume/success", "/api/v1/resume/save", "/api/v1/resume/data").authenticated()
                         .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth -> oauth
