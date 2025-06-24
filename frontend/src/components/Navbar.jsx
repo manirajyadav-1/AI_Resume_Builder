@@ -87,7 +87,7 @@ const Navbar = () => {
                         <div className="truncate text-gray-500 dark:text-gray-400">{userDetails.email}</div>
                       </div>
                       <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
-                        <li><Link to="/dashboard" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Dashboard</Link></li>
+                        <li><Link to="/dashboard" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600" onClick={() => setShowDropdown(prev => !prev)}>Dashboard</Link></li>
                         <li><button onClick={handleLogout} className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Sign out</button></li>
                       </ul>
                     </div>
