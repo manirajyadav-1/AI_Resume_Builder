@@ -3,6 +3,7 @@ package com.resume.backend.Resume.Builder.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.resume.backend.Resume.Builder.Dto.LoginDto;
 import com.resume.backend.Resume.Builder.Dto.ResumeDTO;
+import com.resume.backend.Resume.Builder.Dto.ResumeResponseDTO;
 import com.resume.backend.Resume.Builder.ResumeRequest;
 import com.resume.backend.Resume.Builder.loginresponse.LoginResponse;
 import com.resume.backend.Resume.Builder.model.Resume;
@@ -43,6 +44,9 @@ public class ResumeController {
 
     @Autowired
     private ResumeStorageService resumeStorageService;
+
+    @Autowired
+    private ResumeRepository resumeRepository;
 
     private final ResumeService resumeService;
 
@@ -151,5 +155,54 @@ public class ResumeController {
                     .body(e.getMessage());
         }
     }
+
+    @GetMapping("/data")
+    public ResponseEntity<?> getResumeData(@RequestHeader(value = "Authorization", required = false) String authHeader,
+                                           @AuthenticationPrincipal OAuth2User principal) {
+        try {
+            String email = null;
+
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7);
+                email = jwtService.extractUsername(token);
+            }
+
+            if ((email == null || email.isEmpty()) && principal != null) {
+                email = principal.getAttribute("email");
+                if (email == null) {
+                    email = principal.getAttribute("preferred_username");
+                }
+                if (email == null) {
+                    email = principal.getAttribute("log in");
+                }
+            }
+
+            if (email == null || email.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized: Email not found.");
+            }
+
+            String finalEmail = email;
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("User not found with email: " + finalEmail));
+
+            return resumeRepository.findByUserId(user.getId())
+                    .map(resume -> {
+                        ResumeResponseDTO dto = new ResumeResponseDTO(
+                                resume.getContentJson(),
+                                resume.getTemplateType()
+                        );
+                        return ResponseEntity.ok(dto);
+                    })
+                    .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body(new ResumeResponseDTO(null, null)));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to fetch resume data: " + e.getMessage());
+        }
+    }
+
+
 
 }
