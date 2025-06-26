@@ -10,6 +10,7 @@ import GenerateResume from './pages/GenerateResume'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './context/AuthContext'
 import Dashboard from './pages/Dashboard'
+import ProtectedRoute from './routes/ProtectedRoute'
 
 
 
@@ -24,7 +25,13 @@ createRoot(document.getElementById('root')).render(
             <Route path="about" element={<About />} />
             <Route path="services" element={<Services />} />
             <Route path="generate-resume" element={<GenerateResume />} />
-            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
           </Route>
         </Routes>
       </AuthProvider>
