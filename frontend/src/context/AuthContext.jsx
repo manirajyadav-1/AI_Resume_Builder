@@ -8,11 +8,17 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [userDetails, setUserDetails] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [resumeData, setResumeData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const cookies = new Cookies();
 
   useEffect(() => {
-    fetchUser();
+    const initializeUser = async () => {
+      await fetchUser();
+      setLoading(false); 
+    };
+    initializeUser();
   }, []);
 
   const signup = async (name, email, password) => {
@@ -81,8 +87,9 @@ export const AuthProvider = ({ children }) => {
     try {
       const token = cookies.get("token");
 
+      let res;
       if (token) {
-        const res = await axios.get(
+        res = await axios.get(
           "http://localhost:8080/api/v1/resume/jwt/success",
           {
             headers: {
@@ -91,19 +98,18 @@ export const AuthProvider = ({ children }) => {
             withCredentials: true,
           }
         );
-
-        setUserDetails(res.data);
-        setIsAuthenticated(true);
       } else {
-        const res = await axios.get(
+        res = await axios.get(
           "http://localhost:8080/api/v1/resume/oauth2/success",
           {
             withCredentials: true,
           }
         );
-        setUserDetails(res.data);
-        setIsAuthenticated(true);
       }
+
+      setUserDetails(res.data);
+      setIsAuthenticated(true);
+      await fetchResume();
     } catch (error) {
       setUserDetails(null);
       setIsAuthenticated(false);
@@ -140,6 +146,29 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const fetchResume = async () => {
+      try {
+        const token = cookies.get("token");
+        const config = {
+          method: "GET",
+          url: "http://localhost:8080/api/v1/resume/data",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        };
+
+        if (token) {
+          config.headers["Authorization"] = `Bearer ${token}`;
+        }
+
+        const response = await axios(config);
+        setResumeData(response.data);
+      } catch (error) {
+        console.error("Error fetching resume data:", error.message);
+      }
+    };
+
   return (
     <AuthContext.Provider
       value={{
@@ -149,6 +178,8 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         saveResume,
+        resumeData,
+        loading,
       }}
     >
       {children}
