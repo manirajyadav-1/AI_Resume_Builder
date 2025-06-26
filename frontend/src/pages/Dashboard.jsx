@@ -1,43 +1,78 @@
-import React, { useEffect, useState } from "react";
+import { useState, useRef } from "react";
+import { jsPDF } from "jspdf";
+import { toPng } from "html-to-image";
 import { useAuth } from "../context/AuthContext";
-import axios from "axios";
-import Cookies from "universal-cookie";
+import toast from "react-hot-toast";
+
+import Template1 from "../components/templates/Template1";
+import Template2 from "../components/templates/Template2";
+import Template3 from "../components/templates/Template3";
+import Template4 from "../components/templates/Template4";
+import Template5 from "../components/templates/Template5";
+
+// import ResumeForm from "../components/ResumeForm"; // Create this based on your form logic
 
 const Dashboard = () => {
-  const { userDetails } = useAuth();
-  const [resumeData, setResumeData] = useState(null);
-  
-  const cookies = new Cookies();
-  const token = cookies.get("token");
-  useEffect(() => {
-    const fetchResume = async () => {
-      try {
-        const config = {
-          method: "GET",
-          url: "http://localhost:8080/api/v1/resume/data",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true, // for OAuth2 session
-        };
+  const { userDetails, resumeData, saveResume } = useAuth();
 
-        if (token) {
-          config.headers["Authorization"] = `Bearer ${token}`;
-        }
+  const parsedData = resumeData?.contentJson ? JSON.parse(resumeData.contentJson) : null;
 
-        const response = await axios(config);
-        setResumeData(response.data);
-      } catch (error) {
-        console.error("Error fetching resume data:", error.message);
-      }
-    };
+  const [selectedTemplate, setSelectedTemplate] = useState(1);
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState(parsedData);
+  const resumeRef = useRef(null);
 
-    fetchResume();
-  }, [token]);
+  const renderSelectedTemplate = () => {
+    switch (selectedTemplate) {
+      case 1:
+        return <Template1 data={formData} />;
+      case 2:
+        return <Template2 data={formData} />;
+      case 3:
+        return <Template3 data={formData} />;
+      case 4:
+        return <Template4 data={formData} />;
+      case 5:
+        return <Template5 data={formData} />;
+      default:
+        return <Template1 data={formData} />;
+    }
+  };
+
+  const handleDownloadPdf = () => {
+    if (resumeRef.current) {
+      toPng(resumeRef.current, { quality: 1 })
+        .then((dataUrl) => {
+          const pdf = new jsPDF("p", "mm", "a4");
+          const imgProps = pdf.getImageProperties(dataUrl);
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+          pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
+          pdf.save(`${formData?.personalInformation?.fullName || "resume"}.pdf`);
+        })
+        .catch((err) => {
+          console.error("PDF generation error:", err);
+          toast.error("Error generating PDF");
+        });
+    }
+  };
+
+  const handleEditSubmit = async (updatedData) => {
+    try {
+      await saveResume(updatedData, `template${selectedTemplate}`);
+      setFormData(updatedData);
+      toast.success("Resume updated successfully");
+      setShowForm(false);
+    } catch (error) {
+      toast.error("Failed to update resume");
+      console.error(error);
+    }
+  };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <div className="bg-white p-6 rounded shadow w-[400px] text-center">
+    <div className="px-6 py-24">
+      {/* Profile Info */}
+      <div className="bg-white p-6 rounded shadow w-full max-w-md mx-auto text-center mb-10">
         <img
           src={userDetails.picture || "https://randomuser.me/api/portraits/lego/5.jpg"}
           alt="profile"
@@ -45,19 +80,46 @@ const Dashboard = () => {
         />
         <p className="text-xl font-semibold">{userDetails.name}</p>
         <p className="text-gray-600">{userDetails.email}</p>
-
-        {resumeData ? (
-          <div className="mt-6 text-left">
-            <h3 className="font-bold text-lg">Resume Data:</h3>
-            <pre className="bg-gray-100 p-3 rounded text-sm overflow-x-auto mt-2 max-h-60">
-              {JSON.stringify(JSON.parse(resumeData.contentJson), null, 2)}
-            </pre>
-            <p className="mt-2 text-sm text-gray-500">Template: {resumeData.templateType}</p>
-          </div>
-        ) : (
-          <p className="mt-4 text-gray-500">No resume data found.</p>
-        )}
       </div>
+
+      {parsedData ? (
+        <>
+          {/* Template Selector */}
+          <div className="flex justify-center gap-4 mb-6">
+            {[1, 2, 3, 4, 5].map((num) => (
+              <button
+                key={num}
+                onClick={() => setSelectedTemplate(num)}
+                className={`btn ${selectedTemplate === num ? "btn-primary" : "btn-outline"}`}
+              >
+                Template {num}
+              </button>
+            ))}
+          </div>
+
+          {/* Resume Template Preview */}
+          {!showForm ? (
+            <>
+              <div ref={resumeRef} className="bg-white p-6 shadow rounded w-full max-w-4xl mx-auto">
+                {renderSelectedTemplate()}
+              </div>
+
+              <div className="flex justify-center mt-6 gap-4">
+                <button className="btn btn-primary" onClick={handleDownloadPdf}>
+                  Download PDF
+                </button>
+                <button className="btn btn-secondary" onClick={() => setShowForm(true)}>
+                  Edit Resume
+                </button>
+              </div>
+            </>
+          ) : (
+            <ResumeForm initialData={formData} onSubmit={handleEditSubmit} onCancel={() => setShowForm(false)} />
+          )}
+        </>
+      ) : (
+        <p className="text-center text-gray-500">No resume data found.</p>
+      )}
     </div>
   );
 };
