@@ -13,7 +13,7 @@ import Template5 from "../components/templates/Template5";
 // import ResumeForm from "../components/ResumeForm"; // Create this based on your form logic
 
 const Dashboard = () => {
-  const { userDetails, resumeData, saveResume } = useAuth();
+  const { userDetails, resumeData, saveResume, deleteResume } = useAuth();
 
   const parsedData = resumeData?.contentJson ? JSON.parse(resumeData.contentJson) : null;
 
@@ -69,17 +69,23 @@ const Dashboard = () => {
     }
   };
 
+  const handleDelete = () => {
+  if (window.confirm("Are you sure you want to delete your resume?")) {
+    deleteResume();
+  }
+};
+
   return (
     <div className="px-6 py-24">
       {/* Profile Info */}
-      <div className="bg-white p-6 rounded shadow w-full max-w-md mx-auto text-center mb-10">
+      <div className="p-6 rounded shadow w-full max-w-md mx-auto text-center mb-10">
         <img
           src={userDetails.picture || "https://randomuser.me/api/portraits/lego/5.jpg"}
           alt="profile"
           className="w-24 h-24 rounded-full mx-auto mb-4"
         />
         <p className="text-xl font-semibold">{userDetails.name}</p>
-        <p className="text-gray-600">{userDetails.email}</p>
+        <p className="text-gray-400">{userDetails.email}</p>
       </div>
 
       {parsedData ? (
@@ -110,6 +116,9 @@ const Dashboard = () => {
                 </button>
                 <button className="btn btn-secondary" onClick={() => setShowForm(true)}>
                   Edit Resume
+                </button>
+                <button className="btn btn-error" onClick={handleDelete}>
+                  Delete Resume
                 </button>
               </div>
             </>

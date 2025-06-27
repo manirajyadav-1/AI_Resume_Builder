@@ -167,7 +167,33 @@ export const AuthProvider = ({ children }) => {
       } catch (error) {
         console.error("Error fetching resume data:", error.message);
       }
-    };
+  };
+
+  const deleteResume = async () => {
+    try {
+      const token = cookies.get("token");
+      const config = {
+        method: "DELETE",
+        url: "http://localhost:8080/api/v1/resume/delete",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      };
+
+      if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      await axios(config);
+      toast.success("Resume deleted successfully");
+      setResumeData(null); 
+    } catch (error) {
+      console.error("Resume delete failed:", error.message);
+      toast.error("Failed to delete resume");
+    }
+  };
+
 
   return (
     <AuthContext.Provider
@@ -180,6 +206,7 @@ export const AuthProvider = ({ children }) => {
         saveResume,
         resumeData,
         loading,
+        deleteResume
       }}
     >
       {children}

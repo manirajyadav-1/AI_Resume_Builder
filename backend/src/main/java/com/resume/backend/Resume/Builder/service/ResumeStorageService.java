@@ -84,6 +84,19 @@ public class ResumeStorageService {
             throw new RuntimeException("Failed to save or update resume: " + e.getMessage());
         }
     }
+
+    public void deleteByUserEmail(String email){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+
+        Optional<Resume> resumeOpt = resumeRepository.findByUserId(user.getId());
+
+        if (resumeOpt.isPresent()) {
+            resumeRepository.delete(resumeOpt.get());
+        } else {
+            throw new RuntimeException("No resume found for user: " + email);
+        }
+    }
 }
 
 

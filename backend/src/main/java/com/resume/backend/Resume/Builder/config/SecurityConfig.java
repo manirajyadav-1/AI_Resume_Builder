@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/resume/success", "/api/v1/resume/save", "/api/v1/resume/data").authenticated()
+                        .requestMatchers("/api/v1/resume/success", "/api/v1/resume/save", "/api/v1/resume/data", "/api/v1/resume/delete").authenticated()
                         .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth -> oauth
@@ -48,7 +48,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl("http://localhost:5173/", true)
                 )
                 .authenticationProvider(authenticationProvider)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
