@@ -48,7 +48,6 @@ public class SecurityConfig {
                         .defaultSuccessUrl("http://localhost:5173/", true)
                 )
                 .authenticationProvider(authenticationProvider)
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
