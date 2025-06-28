@@ -3,6 +3,7 @@ import { jsPDF } from "jspdf";
 import { toPng } from "html-to-image";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import ResumeForm from "./ResumeForm";
 
 import Template1 from "../components/templates/Template1";
 import Template2 from "../components/templates/Template2";
@@ -10,7 +11,6 @@ import Template3 from "../components/templates/Template3";
 import Template4 from "../components/templates/Template4";
 import Template5 from "../components/templates/Template5";
 
-// import ResumeForm from "../components/ResumeForm"; // Create this based on your form logic
 
 const Dashboard = () => {
   const { userDetails, resumeData, saveResume, deleteResume } = useAuth();
@@ -41,7 +41,7 @@ const Dashboard = () => {
 
   const handleDownloadPdf = () => {
     if (resumeRef.current) {
-      toPng(resumeRef.current, { quality: 1 })
+      toPng(resumeRef.current, { quality: 1.0 })
         .then((dataUrl) => {
           const pdf = new jsPDF("p", "mm", "a4");
           const imgProps = pdf.getImageProperties(dataUrl);
@@ -106,8 +106,10 @@ const Dashboard = () => {
           {/* Resume Template Preview */}
           {!showForm ? (
             <>
-              <div ref={resumeRef} className="bg-white p-6 shadow rounded w-full max-w-4xl mx-auto">
-                {renderSelectedTemplate()}
+              <div className="flex justify-center">
+                <div ref={resumeRef} className="bg-white rounded">
+                  {renderSelectedTemplate()}
+                </div>
               </div>
 
               <div className="flex justify-center mt-6 gap-4">
