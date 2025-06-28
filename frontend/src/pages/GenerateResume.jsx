@@ -35,10 +35,7 @@ const GenerateResume = () => {
 
   const experienceFields = useFieldArray({ control, name: "experience" });
   const educationFields = useFieldArray({ control, name: "education" });
-  const certificationsFields = useFieldArray({
-    control,
-    name: "certifications",
-  });
+  const certificationsFields = useFieldArray({ control, name: "certifications"});
   const projectsFields = useFieldArray({ control, name: "projects" });
   const languagesFields = useFieldArray({ control, name: "languages" });
   const interestsFields = useFieldArray({ control, name: "interests" });
@@ -108,7 +105,6 @@ const GenerateResume = () => {
           <div key={field.id} className="p-4 rounded-lg mb-4 bg-base-100">
             {keys.map((key) => (
               <div key={key}>
-                {/* {console.log(`${name}`)} */}
                 {renderInput(`${name}.${index}.${key}`, key)}
               </div>
             ))}
