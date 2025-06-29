@@ -23,8 +23,6 @@ public class User implements UserDetails {
 
     private String picture;
 
-    private String provider;
-
     public User() {
     }
 
@@ -104,11 +102,4 @@ public class User implements UserDetails {
         return email;
     }
 
-    public String getProvider() {
-        return provider;
-    }
-
-    public void setProvider(String provider) {
-        this.provider = provider;
-    }
 }
