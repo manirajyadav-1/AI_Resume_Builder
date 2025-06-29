@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { toPng } from "html-to-image";
 import { jsPDF } from "jspdf";
 import Template1 from "./templates/Template1";

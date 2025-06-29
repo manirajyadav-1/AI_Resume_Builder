@@ -152,30 +152,6 @@ const Template4 = ({ data }) => {
             </div>
           ))}
         </section>
-
-        <div className="divider"></div>
-
-        {/* Languages Section */}
-        <section>
-          <h2 className="text-2xl font-semibold text-secondary">Languages</h2>
-          <ul className="list-disc pl-6 text-gray-900">
-            {data.languages.map((lang, index) => (
-              <li key={index}>{lang.name}</li>
-            ))}
-          </ul>
-        </section>
-
-        <div className="divider"></div>
-
-        {/* Interests Section */}
-        <section>
-          <h2 className="text-2xl font-semibold text-secondary">Interests</h2>
-          <ul className="list-disc pl-6 text-gray-900">
-            {data.interests.map((interest, index) => (
-              <li key={index}>{interest.name}</li>
-            ))}
-          </ul>
-        </section>
     </div>
   );
 }

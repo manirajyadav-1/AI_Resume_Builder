@@ -19,8 +19,6 @@ const GenerateResume = () => {
     education: [],
     certifications: [],
     projects: [],
-    languages: [],
-    interests: [],
   });
 
   const { saveResume } = useAuth();
@@ -37,8 +35,6 @@ const GenerateResume = () => {
   const educationFields = useFieldArray({ control, name: "education" });
   const certificationsFields = useFieldArray({ control, name: "certifications"});
   const projectsFields = useFieldArray({ control, name: "projects" });
-  const languagesFields = useFieldArray({ control, name: "languages" });
-  const interestsFields = useFieldArray({ control, name: "interests" });
   const skillsFields = useFieldArray({ control, name: "skills" });
 
   const onSubmit = async (data) => {
@@ -194,20 +190,6 @@ const GenerateResume = () => {
               "technologiesUsed",
               "githubLink",
             ])}
-
-            <div className="flex gap-3 mt-16  p-4 rounded-xl ">
-              <div className="flex-1">
-                {renderFieldArray(languagesFields, "Languages", "languages", [
-                  "name",
-                ])}
-              </div>
-              <div className="flex-1">
-                {renderFieldArray(interestsFields, "Interests", "interests", [
-                  "name",
-                ])}
-              </div>
-            </div>
-
             <button type="submit" className="btn btn-primary w-full">
               Submit
             </button>

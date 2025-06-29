@@ -33,26 +33,6 @@ const Template2 = ({ data }) => {
             ))}
           </div>
         </section>
-
-        {/* Languages Section */}
-        <section className="mt-6">
-          <h2 className="text-2xl font-semibold text-secondary">Languages</h2>
-          <ul className="list-disc pl-6 text-gray-800">
-            {data.languages.map((lang, index) => (
-              <li key={index}>{lang.name}</li>
-            ))}
-          </ul>
-        </section>
-
-        {/* Interests Section */}
-        <section className="mt-6">
-          <h2 className="text-2xl font-semibold text-secondary">Interests</h2>
-          <ul className="list-disc pl-6 text-gray-800">
-            {data.interests.map((interest, index) => (
-              <li key={index}>{interest.name}</li>
-            ))}
-          </ul>
-        </section>
       </aside>
 
       {/* Main Content */}

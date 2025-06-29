@@ -13,8 +13,6 @@ public class ResumeDTO {
     private List<Certification> certifications;
     private List<Project> projects;
     private List<Achievement> achievements;
-    private List<Language> languages;
-    private List<Interest> interests;
 
 
     public String getTemplateType() {
@@ -89,21 +87,6 @@ public class ResumeDTO {
         this.achievements = achievements;
     }
 
-    public List<Language> getLanguages() {
-        return languages;
-    }
-
-    public void setLanguages(List<Language> languages) {
-        this.languages = languages;
-    }
-
-    public List<Interest> getInterests() {
-        return interests;
-    }
-
-    public void setInterests(List<Interest> interests) {
-        this.interests = interests;
-    }
 
 
     public static class Skill {
@@ -313,47 +296,6 @@ public class ResumeDTO {
         }
     }
 
-    public static class Language {
-        private int id;
-        private String name;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
-
-    public static class Interest {
-        private int id;
-        private String name;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
 
 }
 

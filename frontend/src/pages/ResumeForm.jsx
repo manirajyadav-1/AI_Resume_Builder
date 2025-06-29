@@ -10,8 +10,6 @@ const ResumeForm = ({ initialData, onSubmit, onCancel }) => {
   const educationFields = useFieldArray({ control, name: "education" });
   const certificationsFields = useFieldArray({ control, name: "certifications" });
   const projectsFields = useFieldArray({ control, name: "projects" });
-  const languagesFields = useFieldArray({ control, name: "languages" });
-  const interestsFields = useFieldArray({ control, name: "interests" });
   const skillsFields = useFieldArray({ control, name: "skills" });
 
   const renderInput = (name, label, type = "text") => (
@@ -102,16 +100,7 @@ const ResumeForm = ({ initialData, onSubmit, onCancel }) => {
           "technologiesUsed",
           "githubLink",
         ])}
-
-        <div className="flex gap-3 mt-8">
-          <div className="flex-1">
-            {renderFieldArray(languagesFields, "Languages", "languages", ["name"])}
-          </div>
-          <div className="flex-1">
-            {renderFieldArray(interestsFields, "Interests", "interests", ["name"])}
-          </div>
-        </div>
-
+        
         <div className="flex justify-between mt-8">
           <button type="button" onClick={onCancel} className="btn btn-error">
             Cancel
