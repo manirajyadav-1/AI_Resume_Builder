@@ -8,10 +8,13 @@ With Google OAuth2 login, secure cloud storage, and easy editing/downloading fea
 
 ## Tech Stack
 
-<img src="https://www.vectorlogo.zone/logos/reactjs/reactjs-icon.svg" style="margin-right: 25px;" />
-<img src="https://www.vectorlogo.zone/logos/java/java-ar21.svg" style="margin-right: 25px;" />
-<img src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" style="margin-right: 25px;" />
-<img src="https://www.vectorlogo.zone/logos/postgresql/postgresql-ar21.svg" />
+<div style="display: flex; gap: 20px; align-items: center;">
+  <img src="https://www.vectorlogo.zone/logos/reactjs/reactjs-icon.svg" alt="React" />
+  <img src="https://www.vectorlogo.zone/logos/java/java-ar21.svg" alt="Java" />
+  <img src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" alt="Spring" />
+  <img src="https://www.vectorlogo.zone/logos/postgresql/postgresql-ar21.svg" alt="PostgreSQL" />
+</div>
+
 
 
 ## Screenshots
