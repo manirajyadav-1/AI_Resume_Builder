@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (name, email, password) => {
     try {
       await axios.post(
-        "http://localhost:8080/api/v1/resume/auth/signup",
+        `${import.meta.env.VITE_REACT_APP_API_URL}/resume/auth/signup`,
         { name, email, password },
         {
           headers: { "Content-Type": "application/json" },
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/resume/auth/login",
+        `${import.meta.env.VITE_REACT_APP_API_URL}/resume/auth/login`,
         { email, password },
         {
           headers: { "Content-Type": "application/json" },
@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await axios.post(
-        "http://localhost:8080/api/v1/resume/logout",
+        `${import.meta.env.VITE_REACT_APP_API_URL}/resume/logout`,
         {},
         { withCredentials: true }
       );
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
       let res;
       if (token) {
         res = await axios.get(
-          "http://localhost:8080/api/v1/resume/jwt/success",
+          `${import.meta.env.VITE_REACT_APP_API_URL}/resume/jwt/success`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }) => {
         );
       } else {
         res = await axios.get(
-          "http://localhost:8080/api/v1/resume/oauth2/success",
+          `${import.meta.env.VITE_REACT_APP_API_URL}/resume/oauth2/success`,
           {
             withCredentials: true,
           }
@@ -123,7 +123,7 @@ export const AuthProvider = ({ children }) => {
 
       const config = {
         method: "POST",
-        url: "http://localhost:8080/api/v1/resume/save",
+        url: `${import.meta.env.VITE_REACT_APP_API_URL}/resume/save`,
         data: { ...resumeContent, templateType },
         headers: {
           "Content-Type": "application/json",
@@ -151,7 +151,7 @@ export const AuthProvider = ({ children }) => {
         const token = cookies.get("token");
         const config = {
           method: "GET",
-          url: "http://localhost:8080/api/v1/resume/data",
+          url: `${import.meta.env.VITE_REACT_APP_API_URL}/resume/data`,
           headers: {
             "Content-Type": "application/json",
           },
@@ -174,7 +174,7 @@ export const AuthProvider = ({ children }) => {
       const token = cookies.get("token");
       const config = {
         method: "DELETE",
-        url: "http://localhost:8080/api/v1/resume/delete",
+        url: `${import.meta.env.VITE_REACT_APP_API_URL}/resume/delete`,
         headers: {
           "Content-Type": "application/json",
         },

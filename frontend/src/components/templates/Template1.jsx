@@ -9,15 +9,12 @@ const Template1 = ({ data }) => {
       className="max-w-5xl rounded-lg p-8"
     >
       {/* Header Section */}
-      <div className="text-center space-y-2">
-        <h1 className="text-4xl font-bold text-black">
+      <div className="text-center space-y-1">
+        <h1 className="text-5xl font-bold text-black">
           {data.personalInformation.fullName}
         </h1>
-        <p className="text-lg text-black">
-          {data.personalInformation.location}
-        </p>
-
-        <div className="flex justify-center space-x-4 mt-2">
+  
+        <div className="flex justify-center space-x-4 mt-1">
           {data.personalInformation.email && (
             <a
               href={`mailto:${data.personalInformation.email}`}
@@ -42,12 +39,12 @@ const Template1 = ({ data }) => {
               <FaGithub className="mr-2" /> GitHub
             </a>
           )}
-          {data.personalInformation.linkedIn && (
+          {data.personalInformation.linkedin && (
             <a
-              href={data.personalInformation.linkedIn}
+              href={data.personalInformation.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-800 flex items-center"
+              className="text-gray-800 flex items-center"
             >
               <FaLinkedin className="mr-2" /> LinkedIn
             </a>
@@ -66,7 +63,7 @@ const Template1 = ({ data }) => {
       {/* Skills Section */}
       <section>
         <h2 className="text-2xl font-semibold text-secondary">Skills</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-2 text-gray-800">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-1 text-gray-800">
           {data.skills.map((skill, index) => (
             <div key={index} className="badge badge-outline badge-lg px-4 py-2">
               {skill.title} -{" "}
