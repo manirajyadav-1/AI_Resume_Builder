@@ -53,8 +53,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
-
-
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
 
