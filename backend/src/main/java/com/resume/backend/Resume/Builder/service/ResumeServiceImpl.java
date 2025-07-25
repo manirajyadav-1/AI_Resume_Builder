@@ -1,14 +1,10 @@
 package com.resume.backend.Resume.Builder.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.resume.backend.Resume.Builder.model.Resume;
-import com.resume.backend.Resume.Builder.respository.ResumeRepository;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

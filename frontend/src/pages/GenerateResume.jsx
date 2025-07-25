@@ -54,6 +54,7 @@ const GenerateResume = () => {
 
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  
 
   const handleGenerate = async () => {
     try {

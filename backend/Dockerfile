@@ -4,8 +4,9 @@ FROM maven:3.8.4-openjdk-17 AS build
 WORKDIR /app
 
 COPY pom.xml .
-COPY src ./src
+RUN mvn dependency:go-offline
 
+COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Stage 2: Run the application
@@ -18,4 +19,4 @@ COPY --from=build /app/target/Resume-Builder-0.0.1-SNAPSHOT.jar .
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "Resume-Builder-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "/app/Resume-Builder-0.0.1-SNAPSHOT.jar"]
