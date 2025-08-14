@@ -16,8 +16,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 public class JWTConfiguration {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public JWTConfiguration(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Bean
     UserDetailsService userDetailsService() {
