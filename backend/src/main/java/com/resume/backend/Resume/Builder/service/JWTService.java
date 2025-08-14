@@ -15,11 +15,10 @@ import java.util.function.Function;
 
 @Service
 public class JWTService {
-    @Value("${jwt.secret}")
-    private static String secretKey;
 
-    @Value("${jwt.expiration}")
-    private long jwtExpiration;
+    private static String secretKey = "YUhSMGNITTZMeTkzWldKaGRHVXRhRzkzZEM1amIyMGlhWE1pTkdjdE9TNWpiMjA9";
+
+    private long jwtExpiration = 5000000;
 
     public long getExpirationTime() {
         return jwtExpiration;
