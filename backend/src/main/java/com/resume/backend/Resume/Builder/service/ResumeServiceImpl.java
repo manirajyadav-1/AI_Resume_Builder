@@ -20,7 +20,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public   Map<String, Object> generateResumeResponse(String userResumeDescription) throws IOException {
+    public Map<String, Object> generateResumeResponse(String userResumeDescription) throws IOException {
 
         String promptString = this.loadPromptFromFile("resume_prompt.txt");
         String promptContent = this.putValuesToTemplate(promptString, Map.of(
@@ -32,10 +32,10 @@ public class ResumeServiceImpl implements ResumeService {
         return stringObjectMap;
     }
 
-
     String loadPromptFromFile(String filename) throws IOException {
-        Path path = new ClassPathResource(filename).getFile().toPath();
-        return Files.readString(path);
+        try (var inputStream = new ClassPathResource(filename).getInputStream()) {
+            return new String(inputStream.readAllBytes());
+        }
     }
 
     String putValuesToTemplate(String template, Map<String, String> values) {
