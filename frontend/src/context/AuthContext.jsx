@@ -137,7 +137,9 @@ export const AuthProvider = ({ children }) => {
 
       const response = await axios(config);
 
-      toast.success("Resume saved to database!");
+      if(isAuthenticated){
+        toast.success("Resume saved to database!");
+      }
       return response.data;
     } catch (error) {
       console.error("Resume save failed:", error.message);
