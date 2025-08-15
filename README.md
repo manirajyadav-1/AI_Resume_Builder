@@ -46,6 +46,7 @@ With Google OAuth2 login, secure cloud storage, and easy editing/downloading fea
 
 ## Run Locally
 
+## Backend Services
 Clone the project
 
 ```bash
@@ -68,7 +69,27 @@ Start the Backend Services
     ./mvnw spring-boot:run
 ```
 
+### OR
 
+#### Docker Image
+
+The Docker image for this project is available on Docker Hub:https://hub.docker.com/r/maniraj1/resume-builder
+
+Pull the image
+```
+docker pull maniraj1/resume-builder
+```
+
+Run the container
+```
+docker run -p 8080:8080 maniraj1/resume-builder
+```
+
+This maps the container's port 8080 to your local machine's port 8080.
+Once running, the application will be available at:
+http://localhost:8080
+
+## Frontend 
 Start the Frontend
 
 ```bash
